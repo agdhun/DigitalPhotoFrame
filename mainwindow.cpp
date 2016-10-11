@@ -1,14 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-//jialeyige current_img duiduibidudeng caozuo jinxing baocun,xujiarudaotexiaobianhuanli
+int i = 0, s = 0, wi = 0, ks = 0, ce = 0;
+double u = 0.0;
+double contrast = 1.0, brightness = 0;
+
 QStringList string_list;
 QLabel *label;
 QTimer *timer;
 Mat old_img, new_img, current_img;
-int i = 0, s = 0, wi = 0, ks = 0, ce = 0;
-double u = 0.0;
-double contrast = 1.0, brightness = 0;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,8 +21,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QString path= "/home";
     addSubFolderImages(path);
     QString img_init = static_cast<QString>(string_list.at(0));
+    qDebug() << string_list;
     img = imread(img_init.toAscii().data());
     Size dsize = Size(label->size().width()-1, label->size().height()-1);
+    qDebug() << "Label Size is:" << dsize.width << " " << dsize.height;
     cv::resize(img, new_img, dsize, 0, 0 , CV_INTER_LINEAR);
     Show_Image1(new_img);
     label->show();
@@ -39,8 +41,6 @@ void MainWindow::nextpic()
     Mat disp;
     Mat rgb;
     QImage img;
-    qDebug()<<current_img.rows<<" "<<current_img.cols<<" "<<current_img.type();
-    qDebug()<<new_img.rows<<" "<<new_img.cols<<" "<<new_img.type();
     if(s > label->size().width())
     {
         timer->stop();
@@ -162,7 +162,7 @@ void MainWindow::previous_fifo()
     }
 }
 
-void Window_blinds(Mat const& src1, Mat const& src2, Mat& dst, int width, int i)
+void MainWindow::Window_blinds(Mat const& src1, Mat const& src2, Mat& dst, int width, int i)
 {
     CV_Assert(src1.depth() == CV_8U);
 
@@ -249,8 +249,6 @@ void MainWindow::previous_wb()
     }
 }
 
-
-
 void MainWindow::on_ks_valueChanged(int value)
 {
     ks = value;
@@ -275,7 +273,7 @@ void MainWindow::on_sbtt_valueChanged(int value)
     Show_Image();
 }
 
-void Show_Image()
+void MainWindow::Show_Image()
 {
     Mat rgb;
     QImage img;
@@ -356,8 +354,7 @@ void MainWindow::on_previous_clicked()
              rgb = new_img;
              img = QImage((const unsigned char*)(rgb.data), rgb.cols, rgb.rows, rgb.cols*rgb.channels(), QImage::Format_Indexed8);
          }
-         QImg = img;
-         label->setPixmap(QPixmap::fromImage(QImg));
+         label->setPixmap(QPixmap::fromImage(img));
          ui->sbrt->setValue(0);
          ui->sbtt->setValue(100);
          ui->ce->setValue(0);
@@ -420,8 +417,7 @@ void MainWindow::on_next_clicked()
              rgb = new_img;
              img = QImage((const unsigned char*)(rgb.data), rgb.cols, rgb.rows, rgb.cols*rgb.channels(), QImage::Format_Indexed8);
          }
-         QImg = img;
-         label->setPixmap(QPixmap::fromImage(QImg));
+         label->setPixmap(QPixmap::fromImage(img));
          ui->sbrt->setValue(0);
          ui->sbtt->setValue(100);
          ui->ce->setValue(0);
@@ -430,7 +426,7 @@ void MainWindow::on_next_clicked()
     }
 }
 
-void Show_Image1(Mat const& disp)
+void MainWindow::Show_Image1(Mat const& disp)
 {
     Mat rgb;
     QImage img;

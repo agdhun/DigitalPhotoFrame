@@ -21,6 +21,7 @@ using namespace std;
 using namespace cv;
 
 extern QPushButton *button;
+
 namespace Ui {
 class MainWindow;
 }
@@ -32,13 +33,16 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void Window_blinds(Mat const& src1, Mat const& src2, Mat& dst, int width, int i);
+    void Show_Image();
+    void Show_Image1(Mat const& disp);
+    void addSubFolderImages(QString path);
+    void translateTransform(cv::Mat const& src, cv::Mat& dst, int dx, int dy);
 
 private:
     Ui::MainWindow *ui;
 
 public slots:
-    void addSubFolderImages(QString path);
-    void translateTransform(cv::Mat const& src, cv::Mat& dst, int dx, int dy);
     void nextpic();
     void previous_pic();
     void next_fifo();
@@ -48,7 +52,7 @@ public slots:
 
 public:
     IplImage* iplImg;
-    QImage QImg;
+
 private slots:
     void on_ks_valueChanged(int value);
     void on_sbrt_valueChanged(int value);
@@ -58,7 +62,5 @@ private slots:
     void on_next_clicked();
 };
 
-void Window_blinds(Mat const& src, Mat& dst, int width, int i);
-void Show_Image();
-void Show_Image1(Mat const& disp);
+
 #endif // MAINWINDOW_H
