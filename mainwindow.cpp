@@ -345,15 +345,15 @@ void MainWindow::on_previous_clicked()
     {
         Mat rgb;
         QImage img;
-        if(new_img.channels() == 3)
-        {
-            cvtColor(new_img, rgb, CV_BGR2RGB);
-            img = QImage((const unsigned char*)(rgb.data), rgb.cols, rgb.rows, rgb.cols*rgb.channels(), QImage::Format_RGB888);
-         }else
+  if(new_img.channels() == 3)
          {
-             rgb = new_img;
-             img = QImage((const unsigned char*)(rgb.data), rgb.cols, rgb.rows, rgb.cols*rgb.channels(), QImage::Format_Indexed8);
-         }
+            cvtColor(new_img, rgb, CV_BGR2RGB);
+          img = QImage((const unsigned char*)(rgb.data), rgb.cols, rgb.rows,  rgb.cols*rgb.channels(),  QImage::Format_RGB888);
+         }else
+          {
+              rgb = new_img;
+              img = QImage((const unsigned char*)(rgb.data), rgb.cols, rgb.rows, rgb.cols*rgb.channels(), QImage::Format_Indexed8);
+          }
          label->setPixmap(QPixmap::fromImage(img));
          ui->sbrt->setValue(0);
          ui->sbtt->setValue(100);
